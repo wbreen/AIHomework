@@ -20,6 +20,11 @@ public class BreenVacuumAgent extends VacuumAgent{
 	
 	
 	public int getAction() {
+//		System.out.println("current X " + currentXLoc);
+//		System.out.println("current Y " + currentYLoc);
+		if(seesDirt()) {
+			return this.SUCK;
+		}
 		while(!haveWidth) {
 			//System.out.println("current width " + width);
 			return getWidth();
@@ -34,8 +39,14 @@ public class BreenVacuumAgent extends VacuumAgent{
 			haveSetCurrentLoc = true;
 			goingLeft = true;
 		}
-		if(height%2 == 0) {
+		if(isHome()) {
+			return this.OFF;
+		}
+		if(width > 2) {
 			return evenHeight();
+		}
+		if(width <= 2) {
+			return narrowGrid();
 		}
 		if(bumped()) {
 			return this.LEFT;
@@ -76,23 +87,37 @@ public class BreenVacuumAgent extends VacuumAgent{
 	
 	//Method that will clean the room if the height of the room is even
 	public int evenHeight() {
-		System.out.println("current X " + currentXLoc);
-		if(seesDirt()) {
-			return this.SUCK;
-		}
-		if(currentXLoc == 0 && currentYLoc !=0 && !goingDown && goingLeft) {
+		
+		//handles the left turn on the grid
+		if(currentXLoc == 1 && currentYLoc !=0 && !goingDown && goingLeft) {
 			goingDown = true;
 			return this.LEFT;
 		}
-		if(currentXLoc == 0 && currentYLoc !=0 && goingDown && goingLeft) {
+		if(currentXLoc == 1 && currentYLoc !=0 && goingDown && goingLeft) {
 			currentYLoc = currentYLoc-1;
 			goingLeft = false;
 			return this.FORWARD;
 		}
-		if(currentXLoc == 0 && goingDown && !goingLeft) {
+		if(currentXLoc == 1 && goingDown && !goingLeft) {
 			goingDown = false;
 			return this.LEFT;
 		}
+		//handles the right side turn on the grid
+		if(currentXLoc == width-1 && !goingDown && !goingLeft) {
+			goingDown = true;
+			return this.RIGHT;
+		}
+		if(currentXLoc == width-1 && goingDown && !goingLeft) {
+			currentYLoc = currentYLoc-1;
+			goingLeft = true;
+			return this.FORWARD;
+		}
+		if(currentXLoc == width-1 && goingDown && goingLeft) {
+			goingDown = false;
+			return this.RIGHT;
+		}
+		
+		//tells you what direction the bot is going in
 		if(goingLeft) {
 			currentXLoc--;
 			return this.FORWARD;
@@ -101,14 +126,15 @@ public class BreenVacuumAgent extends VacuumAgent{
 			currentXLoc++;
 			return this.FORWARD;
 		}
-		return this.FORWARD;
+		return this.OFF;
 	}
 	
 	
 	//Method that will clean the room if the height of the room is odd
-	public int oddHeight() {
-		if(seesDirt()) {
-			return this.SUCK;
+	public int narrowGrid() {
+		if(bumped()) {
+			goingLeft = false;
+			return this.LEFT;
 		}
 		return this.FORWARD;
 	}
