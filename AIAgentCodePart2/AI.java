@@ -25,6 +25,7 @@ public class AI
 		HashMap<String, VacuumAgent> agentList = new HashMap<String, VacuumAgent>();
 		agentList.put("Random Vacuum Agent", new RandomVacuumAgent());
 		agentList.put("Reactive Vacuum Agent", new ReactiveVacuumAgent());
+		agentList.put("Breen's Agent", new BreenVacuumAgent());
 		/*agentList.put("Shannons Vacuum Agent", new ShannonsVacuum());
 		agentList.put("Brian", new BriansModelVacuumAgent());
 		agentList.put("Chris", new Christobot());
