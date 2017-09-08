@@ -7,17 +7,22 @@ public class BreenVacuumAgent extends VacuumAgent{
 	public boolean hitRightWall;
 	public boolean hitTopWall;
 	
-	public int width;
-	public int height;
+	int width;
+	int height;
 	
 	public int getAction() {
 		while(!hitRightWall) {
-			getWidth();
+			//System.out.println("current width " + width);
+			return getWidth();
+		}
+		while(!hitTopWall) {
+			//System.out.println("Current height "+height);
+			return getHeight();
 		}
 		if(bumped()) {
 			return this.LEFT;
 		}
-		return this.FORWARD;
+		return this.OFF;
 	}
 
 	public int getWidth() {
@@ -30,6 +35,19 @@ public class BreenVacuumAgent extends VacuumAgent{
 		}
 		else { 
 			width++;
+			return this.FORWARD;
+		}
+	}
+	public int getHeight() {
+		if(seesDirt()) {
+			return this.SUCK;
+		}
+		if(bumped()) {
+			hitTopWall = true;
+			return this.LEFT;
+		}
+		else {
+			height++;
 			return this.FORWARD;
 		}
 	}
