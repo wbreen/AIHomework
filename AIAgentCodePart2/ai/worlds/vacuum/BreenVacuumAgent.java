@@ -56,9 +56,6 @@ public class BreenVacuumAgent extends VacuumAgent{
 
 	//method that makes the bot go all the way to the right of the grid
 	public int getWidth() {
-		if(seesDirt()) {
-			return this.SUCK;
-		}
 		if(bumped()) {
 			haveWidth = true;
 			return this.LEFT;
@@ -71,9 +68,6 @@ public class BreenVacuumAgent extends VacuumAgent{
 	
 	//method that makes the bot go to the top of the grid
 	public int getHeight() {
-		if(seesDirt()) {
-			return this.SUCK;
-		}
 		if(bumped()) {
 			haveHeight = true;
 			return this.LEFT;
