@@ -188,6 +188,46 @@ isLiar(Says):-
 
 
 
+% More experimentation with how to tell if the guy is a liar
+% Says "Im red or Im from the South
+% Determine if the guy is a liar
+isLiar(Color, From):-
+    Color.
+isLiar([green,south]).
+
+%Misc stuff from prolog
+%Says=[Color, Region],
+%    Color = [red,green],
+%    Region = [north, south],
+%    From=[FColor, FRegion],
+%    FColor = [red, green],
+%    FRegion = [north, south],
+%              
+%    isLiar(Says, From),
+%    Says \= From.
+
+colorReg(Says, Ans):-
+    Says = [SaysColor, SaysRegion],
+    Ans = [Color, Region],
+    Color = red; Color=green,
+    Region=north; Region=south,
+%    (Color = red; Color = green),
+%    (Region = north; Region = south),
+    isLiar(Says),
+    member([SaysColor,SaysRegion], Ans),
+    SaysColor\=Color, SaysRegion\=Region,
+    
+    not(isLiar(Says)),
+    member([SaysColor,SaysRegion], Ans),
+    SaysColor=Color, SaysRegion=Region
+    .
+
+
+
+
+
+
+
 start(X):- X = [Dad,Mom,Matt,John,Tim],
 	((Dad = y, Mom = y); Dad = n),
 	(Matt = y; John = y),
