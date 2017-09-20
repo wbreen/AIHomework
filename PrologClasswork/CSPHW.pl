@@ -140,6 +140,7 @@ couplesDressed(Wearing):-
 % Semicolon means 'or' and comma means 'and'
 % 
 % Bogg says "I'm red or I'm from the south"
+% ANSWER IS: He is red and from the south
 % Tell the color and region of Mr. Bogg
 % 
 %tellColorReg(Says):- Says =[North,South,Red,Green,Truth],
@@ -160,7 +161,30 @@ tellColor3(Says, From):-
     (   Region=south, (   FColor=red, (   FRegion=south; FRegion=north)));
     (   Region=north, (   FColor=green,(   FRegion=north; FRegion=south))).
 
+% Determine if the guy is a liar
+isLiar(Says):-
+    Says=[Color, Region],
+    (   Color = red, Region = south),
+    (   Color = green, Region = north).
 
+%Misc stuff from prolog
+%Says=[Color, Region],
+%    Color = [red,green],
+%    Region = [north, south],
+%    From=[FColor, FRegion],
+%    FColor = [red, green],
+%    FRegion = [north, south],
+%              
+%    isLiar(Says, From),
+%    Says \= From.
+
+%   :- not(isLiar(Says,From)), From = Says.
+
+
+%    (   Color=red, FRegion=north, FColor=red);
+%    (   Color=green, FRegion=south, FColor=green);
+%   (   Region=south, (   FColor=red, (   FRegion=south; FRegion=north)));
+%    (   Region=north, (   FColor=green,(   FRegion=north; FRegion=south))).
 
 
 
