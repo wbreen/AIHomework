@@ -5,8 +5,6 @@ public class BreenVacuumAgent extends VacuumAgent{
 	//getting width and height of 'world'
 	boolean haveWidth;
 	boolean haveHeight;
-//	public boolean hitRightWall;
-//	public boolean hitTopWall;
 	int width;
 	int height;
 	boolean evenHeight;
@@ -133,8 +131,6 @@ public class BreenVacuumAgent extends VacuumAgent{
 		return this.FORWARD;
 	}
 	
-	
-	//Random methods to use throughout
 	
 }
 
