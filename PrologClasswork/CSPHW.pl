@@ -223,7 +223,27 @@ colorReg(Says, Ans):-
     .
 
 
-
+% Question 7, Harry Potter puzzle
+% 
+escapeRoom(Bottles):-
+    Bottles=[[1, FirstSize, FirstHolds],
+              [2,SecondSize, SecondHolds],
+              [3,ThirdSize, ThirdHolds],
+              [4,FourthSize, FourthHolds],
+              [5, FifthSize, FifthHolds],
+              [6, SixthSize, SixthHolds],
+              [7,SeventhSize, SeventhHolds]],
+        permutation([poison,poison,poison,wine,wine,forward,backward],
+                    [FirstHolds,SecondHolds,ThirdHolds,FourthHolds,FifthHolds,SixthHolds,SeventhHolds]),
+        permutation([giant7,tall6,tall5,tall4,tall3,tall2,dwarf1],
+                    [FirstSize,SecondSize,ThirdSize,FourthSize,FifthSize,SixthSize,SeventhSize]),
+        % poison is to the left of nettlewine
+        member([
+        % first is not the same as last
+        % first and last will not help you move forward
+        % The tallest isn't poison
+        % The shortest isn't poison
+        % The second and the sixth are the same thing
 
 
 
