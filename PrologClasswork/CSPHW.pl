@@ -238,12 +238,22 @@ escapeRoom(Bottles):-
         permutation([giant7,tall6,tall5,tall4,tall3,tall2,dwarf1],
                     [FirstSize,SecondSize,ThirdSize,FourthSize,FifthSize,SixthSize,SeventhSize]),
         % poison is to the left of nettlewine
-        member([
+    member([PoisonLoc,_,poison],Bottles), 
+    member([WineLoc,_,wine],Bottles),
+    PoisonLoc is WineLoc-1,
         % first is not the same as last
+    member([1,_,FirstH],Bottles), 
+    member([7,_,LastH],Bottles), FirstH\=LastH,
         % first and last will not help you move forward
+    member([1,_,FirstBottle],Bottles), FirstBottle\=forward,
+    member([7,_,LastBottle],Bottles), LastBottle\=forward,
         % The tallest isn't poison
+    member([_,giant7,TallHolds],Bottles), TallHolds\=poison,
         % The shortest isn't poison
+    member([_,dwarf1,ShortHolds],Bottles), ShortHolds\=poison,
         % The second and the sixth are the same thing
+    member([2,_,TwoHolds],Bottles), 
+    member([6,_,SixHolds],Bottles), TwoHolds=SixHolds.
 
 
 
