@@ -68,8 +68,8 @@ heuristic([SH|ST],[GH|GT], Heur):- SH \= GH,
     heuristic(ST, GT, PrevHeur),
     Heur is PrevHeur + 1.
 %heuristic(S,G,Heur):- S\=G, Heur is 1.
-%heuristic([SH|ST], [GH|GT], Heur):- SH==GH,
-%    heuristic(ST, GT, PrevHeur),
-%    Heur is PrevHeur.
+heuristic([SH|ST], [GH|GT], Heur):- SH==GH,
+    heuristic(ST, GT, PrevHeur),
+    Heur is PrevHeur.
 
 
