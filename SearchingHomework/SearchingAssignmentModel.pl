@@ -58,3 +58,18 @@ move([A,B,C,D,E,F,G,Em,I],[A,B,C,D,E,F,G,I,Em]):- swap(Em,I).
 
 %Move where Z3 is the empty square
 %move([A,B,C,D,E,F,G,H,I],[A,B,C,D,E,F,G,H,I]):- swap(Em,_).
+
+
+
+% Hamming Distance version of Heuristic:
+% number of tiles that are out of place
+heuristic(S,G,Heur):- S==G, Heur is 0.
+heuristic([SH|ST],[GH|GT], Heur):- SH \= GH,
+    heuristic(ST, GT, PrevHeur),
+    Heur is PrevHeur + 1.
+%heuristic(S,G,Heur):- S\=G, Heur is 1.
+%heuristic([SH|ST], [GH|GT], Heur):- SH==GH,
+%    heuristic(ST, GT, PrevHeur),
+%    Heur is PrevHeur.
+
+
