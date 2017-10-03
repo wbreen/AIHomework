@@ -1,3 +1,4 @@
+:- set_prolog_stack(global, limit(1000000000000)).
 % State representation:
 % [X1,X2,X3,Y1,Y2,Y3,Z1,Z2,Z3]
 % Or [A,B,C,D,E,F,G,H,I] And Em represents the empty square
