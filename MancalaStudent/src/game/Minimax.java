@@ -4,7 +4,7 @@ import java.util.*;
 public class Minimax {
 	int bestMove;
 	//double bestVal;
-	int bestMoveHere;
+	//int bestMoveHere;
 	
 	/*
 	 * Create a heuristic with the knowledge that the North player is 
@@ -51,29 +51,31 @@ public class Minimax {
 	//this returns the value of each 
 	public double getValue(GameBoard game, int level, boolean max, double alpha, double beta){
 		//clone the board so you can look at different versions of it without affecting the actual state
-		GameBoard cloned = game.clone();
+		
 		//get the list of possible moves for the cloned state
-		List<Integer> posMoves = cloned.getPossibleMoves();
+		List<Integer> posMoves = game.getPossibleMoves();
 		//set up a bestVal variable to be used and reset each time through the algo
 		double bestVal;
-		//int bestMoveHere;
+		int bestMoveHere = 0;
 		int newLevel = level;
-		StringWriter.println("Getting value for state: "+cloned.getStateDescription());
+		newLevel--;
+		StringWriter.println("Getting value for state: "+game.getStateDescription());
 		
 		//base case for the recursion
 		//so when the search gets deep enough, it uses the heuristic its found
-		if(level==0 || cloned.gameOver()) {
-			StringWriter.println("Returning heurustic: " + heuristic(cloned));
-			return heuristic(cloned);
+		if(level==0 || game.gameOver()) {
+			StringWriter.println("Returning heurustic: " + heuristic(game));
+			return heuristic(game);
 		}
 		else if(max) {
 			//start by reducing the level you are looking at
-			newLevel--;
+			//newLevel--;
 			//bestVal is set really low to begin with 
 			bestVal = -100000000;
 			//int bestMoveHere;
 			//translated from pseudocode
 			for(int i = 0; i < posMoves.size()-1; i++) {
+				GameBoard cloned = game.clone();
 				cloned.moveMade(posMoves.get(i));
 				bestMoveHere = posMoves.get(i);
 				bestVal = Max(bestVal, getValue(cloned, newLevel, !max, alpha, beta));
@@ -84,18 +86,20 @@ public class Minimax {
 				//bestVal = Max(bestVal, getValue(cloned, level, !max, alpha, beta));
 				alpha = Max(alpha, bestVal);
 			}
-			StringWriter.println("Returning for state: "+cloned.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
+			StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
 			return bestVal;
 		}
 		
 		else if(!max) {
-			newLevel--;
+			//newLevel--;
 			bestVal = 100000000;
 			//int bestMoveHere;
+			int possibleMove;
 			//translated from pseudocode
 			for(int i = 0; i < posMoves.size()-1; i++) {
+				GameBoard cloned = game.clone();
 				cloned.moveMade(posMoves.get(i));
-				bestMoveHere = posMoves.get(i);
+				possibleMove = posMoves.get(i);
 				bestVal = Min(bestVal, getValue(cloned, newLevel, !max, alpha, beta));
 				if (bestVal <= alpha) {
 					StringWriter.println("Returning for state: "+cloned.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
@@ -105,7 +109,7 @@ public class Minimax {
 				beta = Min(bestVal, beta);
 				
 			}
-			StringWriter.println("Returning for state: "+cloned.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
+			StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
 			return bestVal;
 			
 		}
@@ -133,4 +137,17 @@ public class Minimax {
 			return val2;
 		}
 	}
+	
+	public double goThroughMoves(List<Integer> possibleMoves, int bestVal,GameBoard game, int level, boolean max, double alpha, double beta){
+		for(int i=0; i < possibleMoves.size()-1; i++) {
+			GameBoard clone = game.clone();
+			clone.moveMade(possibleMoves.get(i));
+			
+		}
+		return 0;
+	}
+
+
 }
+
+	
