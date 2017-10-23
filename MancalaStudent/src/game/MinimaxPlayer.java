@@ -14,7 +14,7 @@ public class MinimaxPlayer implements Player{
 	}
 	
 	public String getName(){
-		return name;
+		return name; 
 	}
 	
 	public int move(GameBoard game) {
