@@ -49,9 +49,7 @@ public class Minimax {
 	 */
 	
 	//this returns the value of each 
-	public double getValue(GameBoard game, int level, boolean max, double alpha, double beta){
-		//clone the board so you can look at different versions of it without affecting the actual state
-		
+	public double getValue(GameBoard game, int level, boolean max, double alpha, double beta) {
 		//get the list of possible moves for the cloned state
 		List<Integer> posMoves = game.getPossibleMoves();
 		//set up a bestVal variable to be used and reset each time through the algo
@@ -63,7 +61,7 @@ public class Minimax {
 		
 		//base case for the recursion
 		//so when the search gets deep enough, it uses the heuristic its found
-		if(level==0 || game.gameOver()) {
+		if(level==0 || game.gameOver()|| newLevel < 0) {
 			StringWriter.println("Returning heurustic: " + heuristic(game));
 			return heuristic(game);
 		}
@@ -73,20 +71,24 @@ public class Minimax {
 			//bestVal is set really low to begin with 
 			bestVal = -100000000;
 			//int bestMoveHere;
+			int possibleMove;
 			//translated from pseudocode
-			for(int i = 0; i < posMoves.size()-1; i++) {
+			for(int i = 0; i < posMoves.size(); i++) {
 				GameBoard cloned = game.clone();
 				cloned.moveMade(posMoves.get(i));
 				bestMoveHere = posMoves.get(i);
+				//possibleMove=posMoves.get(i);
 				bestVal = Max(bestVal, getValue(cloned, newLevel, !max, alpha, beta));
 				if (bestVal >= beta) {
 					StringWriter.println("Returning for state: "+cloned.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
+					//bestMove = bestMoveHere;
 					return bestVal;
 				}
-				//bestVal = Max(bestVal, getValue(cloned, level, !max, alpha, beta));
+				//bestVal = Max(bestVal, getValue(cloned, newLevel, !max, alpha, beta));
 				alpha = Max(alpha, bestVal);
 			}
 			StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
+			bestMove = bestMoveHere;
 			return bestVal;
 		}
 		
@@ -96,20 +98,23 @@ public class Minimax {
 			//int bestMoveHere;
 			int possibleMove;
 			//translated from pseudocode
-			for(int i = 0; i < posMoves.size()-1; i++) {
+			for(int i = 0; i < posMoves.size(); i++) {
 				GameBoard cloned = game.clone();
 				cloned.moveMade(posMoves.get(i));
-				possibleMove = posMoves.get(i);
+				bestMoveHere = posMoves.get(i);
+				//possibleMove=posMoves.get(i);
 				bestVal = Min(bestVal, getValue(cloned, newLevel, !max, alpha, beta));
 				if (bestVal <= alpha) {
 					StringWriter.println("Returning for state: "+cloned.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
+					//bestMove = bestMoveHere;
 					return bestVal;
 				}
-				//bestVal = Min(bestVal, getValue(cloned, level, max, alpha, beta));
+				//bestVal = Min(bestVal, getValue(cloned, newLevel, max, alpha, beta));
 				beta = Min(bestVal, beta);
 				
 			}
 			StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
+			bestMove = bestMoveHere;
 			return bestVal;
 			
 		}
