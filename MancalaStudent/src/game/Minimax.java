@@ -3,8 +3,6 @@ import java.util.*;
 
 public class Minimax {
 	int bestMove;
-	//double bestVal;
-	//int bestMoveHere;
 	
 	/*
 	 * Create a heuristic with the knowledge that the North player is 
@@ -50,13 +48,16 @@ public class Minimax {
 	
 	//this returns the value of each 
 	public double getValue(GameBoard game, int level, boolean max, double alpha, double beta) {
+		
 		//get the list of possible moves for the cloned state
 		List<Integer> posMoves = game.getPossibleMoves();
-		//set up a bestVal variable to be used and reset each time through the algo
-		double bestVal;
-		int bestMoveHere = 0;
-		int newLevel = level;
-		newLevel--;
+		
+		//set up a bestVal variable to be used and reset each time through the alg
+		double bestVal;			//to return
+		int bestMoveHere = 0;	//to see which move is the best move from the array of possible moves
+		
+		//go down to the next level for later in recursion
+		int newLevel = level-1;
 		StringWriter.println("Getting value for state: "+game.getStateDescription());
 		
 		//base case for the recursion
@@ -66,26 +67,40 @@ public class Minimax {
 			return heuristic(game);
 		}
 		else if(max) {
-			//start by reducing the level you are looking at
-			//newLevel--;
 			//bestVal is set really low to begin with 
 			bestVal = -100000000;
-			//int bestMoveHere;
-			int possibleMove;
+			int moveMade=0;
+			
 			//translated from pseudocode
 			for(int i = 0; i < posMoves.size(); i++) {
+				//clone the game so you start with a fresh look at the original board each time
 				GameBoard cloned = game.clone();
+				//move through each of the possible moves
 				cloned.moveMade(posMoves.get(i));
-				bestMoveHere = posMoves.get(i);
-				//possibleMove=posMoves.get(i);
+				
+				//the move that is being made right now
+				moveMade = posMoves.get(i);				
+				
+				//see if the possible move is the best move, and if it is, set possible move to best move
+				//how?
+				//if a move changes the alpha value, then it is the best possible move for it (for max) 
+				//if the move changes the beta value (for min), then it is the best possible move for min
+				
 				bestVal = Max(bestVal, getValue(cloned, newLevel, !max, alpha, beta));
 				if (bestVal >= beta) {
-					StringWriter.println("Returning for state: "+cloned.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
-					//bestMove = bestMoveHere;
+					bestMoveHere  = moveMade;
+					StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
+					bestMove = bestMoveHere;
 					return bestVal;
 				}
-				//bestVal = Max(bestVal, getValue(cloned, newLevel, !max, alpha, beta));
-				alpha = Max(alpha, bestVal);
+				//set alpha to its new better value
+				if(bestVal > alpha) {
+					alpha = Max(alpha, bestVal);
+					bestMoveHere = moveMade;
+				} 
+			}
+			if(bestMoveHere==-1) {
+				bestMoveHere = moveMade;
 			}
 			StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
 			bestMove = bestMoveHere;
@@ -95,28 +110,37 @@ public class Minimax {
 		else if(!max) {
 			//newLevel--;
 			bestVal = 100000000;
-			//int bestMoveHere;
-			int possibleMove;
+			int moveMade=0;
+			//change this so it will change with the first move, but if the second move is not, I need a way to keep up with the first move through the recursion
+			
 			//translated from pseudocode
 			for(int i = 0; i < posMoves.size(); i++) {
 				GameBoard cloned = game.clone();
 				cloned.moveMade(posMoves.get(i));
-				bestMoveHere = posMoves.get(i);
-				//possibleMove=posMoves.get(i);
+				
+				//bestMoveHere = posMoves.get(i);
+				moveMade = posMoves.get(i);
+				
 				bestVal = Min(bestVal, getValue(cloned, newLevel, !max, alpha, beta));
 				if (bestVal <= alpha) {
-					StringWriter.println("Returning for state: "+cloned.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
-					//bestMove = bestMoveHere;
+					bestMoveHere  = moveMade;
+					StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
+					//bestMoveHere  = moveMade;
+					bestMove = bestMoveHere;
 					return bestVal;
 				}
-				//bestVal = Min(bestVal, getValue(cloned, newLevel, max, alpha, beta));
-				beta = Min(bestVal, beta);
-				
+				//set beta to its new better value
+				if(bestVal < beta) {
+					beta = Min(bestVal, beta);
+					bestMoveHere = moveMade;
+				}
+			}
+			if(bestMoveHere==-1) {
+				bestMoveHere = moveMade;
 			}
 			StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
 			bestMove = bestMoveHere;
 			return bestVal;
-			
 		}
 		else {
 			return 0;
