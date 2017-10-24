@@ -54,7 +54,7 @@ public class Minimax {
 		
 		//set up a bestVal variable to be used and reset each time through the alg
 		double bestVal;			//to return
-		int bestMoveHere = 0;	//to see which move is the best move from the array of possible moves
+		int bestMoveHere = -1;	//to see which move is the best move from the array of possible moves
 		
 		//go down to the next level for later in recursion
 		int newLevel = level-1;
@@ -62,7 +62,7 @@ public class Minimax {
 		
 		//base case for the recursion
 		//so when the search gets deep enough, it uses the heuristic its found
-		if(level==0 || game.gameOver()|| newLevel < 0) {
+		if(level==0 || game.gameOver()) {
 			StringWriter.println("Returning heurustic: " + heuristic(game));
 			return heuristic(game);
 		}
@@ -79,10 +79,10 @@ public class Minimax {
 				cloned.moveMade(posMoves.get(i));
 				
 				//the move that is being made right now
-				moveMade = posMoves.get(i);				
+				moveMade = posMoves.get(i);
 				
 				//see if the possible move is the best move, and if it is, set possible move to best move
-				//how?
+				//how do you determine if the move is the best move?
 				//if a move changes the alpha value, then it is the best possible move for it (for max) 
 				//if the move changes the beta value (for min), then it is the best possible move for min
 				
@@ -98,6 +98,7 @@ public class Minimax {
 					alpha = Max(alpha, bestVal);
 					bestMoveHere = moveMade;
 				} 
+				
 			}
 			if(bestMoveHere==-1) {
 				bestMoveHere = moveMade;
@@ -129,15 +130,16 @@ public class Minimax {
 					bestMove = bestMoveHere;
 					return bestVal;
 				}
-				//set beta to its new better value
+				
+				//set beta to its new better value and change bestMoveHere to moveMade
 				if(bestVal < beta) {
 					beta = Min(bestVal, beta);
 					bestMoveHere = moveMade;
 				}
 			}
-			if(bestMoveHere==-1) {
-				bestMoveHere = moveMade;
-			}
+//			if(bestMoveHere==-1) {
+//				bestMoveHere = moveMade;
+//			}
 			StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
 			bestMove = bestMoveHere;
 			return bestVal;
@@ -146,6 +148,7 @@ public class Minimax {
 			return 0;
 		}
 	}
+	
 	
 	//helper method to tell if one value is bigger than another value
 	public double Max(double val1, double val2) {
