@@ -10,9 +10,44 @@ public class Minimax {
 	 */
 	public int heuristic(GameBoard game) {
 		// use this line for testing.  Change to play Mancala.
-		return game.defaultHeuristic();
+		//return game.defaultHeuristic();
+		int heur = 0;
+		int northEnd;
+		int southEnd;
+		
+		//subtract stones left in the north mancala from those in the south to get a basic heuristic
+		String currentState = game.getStateDescription();
+		int[] stateArr= new int[currentState.length()];
+		stateArr = convertToArr(currentState);
+		northEnd = stateArr[stateArr.length-1];
+		southEnd = stateArr[stateArr.length/2];
+//		heur = (int) ((northEnd*(.5*stonesLeftNorth)) - (southEnd*(.5*stonesLeftSouth)));
+		heur = northEnd - southEnd;
+		
+		return heur;
 	}
 
+	//convert given string into an array
+	public int[] convertToArr(String state) {
+		int[] currentState = new int[state.length()-1];
+		for(int i=0; i<state.length()-1; i++) {
+			String c = state.substring(i,i+1);
+			if(!c.equals(" ")) {
+				int num = Integer.parseInt(c);
+				currentState[i] = num;
+			}
+		}
+		return currentState;
+	}
+	
+	//take the array and sum the parts left in it (not used in the end)
+	public int sumArrPart(int[] myArr, int from, int to) {
+		int total=0;
+		for (int i = from; i<to; i++) {
+			total = total + myArr[i];
+		}
+		return total;
+	}
 	
 	 /* This method should return the MOVE that gives the best value (don't return the best value itself.)
 	  * In Mancala, it's a pit number.
@@ -65,6 +100,7 @@ public class Minimax {
 		//so when the search gets deep enough, it uses the heuristic its found
 		if(level==0 || game.gameOver()) {
 			StringWriter.println("Returning heurustic: " + heuristic(game));
+			//System.out.println("Returning heuristic: "+ heuristic(game));
 			return heuristic(game);
 		}
 		else if(max) {
@@ -79,7 +115,6 @@ public class Minimax {
 				GameBoard cloned = game.clone();
 				//move through each of the possible moves
 				cloned.moveMade(posMoves.get(i));
-				
 				//the move that is being made right now
 				moveMade = posMoves.get(i);
 				
@@ -90,27 +125,23 @@ public class Minimax {
 				localCurrVal = getValue(cloned, newLevel, !max, alpha, beta);
 				bestVal = Max(bestVal, localCurrVal);
 				
+				//set alpha to its new better value
 				if(bestVal <= localCurrVal) {
 					alpha = Max(alpha, bestVal);
 					bestMoveHere = moveMade;
 				} 
-//				alpha = Max(alpha, bestVal);
+				//cut here if the bot shouldn't look any farther down this part of the tree
 				if (bestVal >= beta) {
 					bestMoveHere  = moveMade;
 					StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
 					bestMove = bestMoveHere;
 					return bestVal;
 				}
-				//set alpha to its new better value
-//				if(bestVal > localCurrVal) {
-//					alpha = Max(alpha, bestVal);
-//					bestMoveHere = moveMade;
-//				} 
+
+
 				
 			}
-//			if(bestMoveHere==-1) {
-//				bestMoveHere = moveMade;
-//			}
+			
 			StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
 			bestMove = bestMoveHere;
 			return bestVal;
@@ -121,41 +152,30 @@ public class Minimax {
 			bestVal = 100000000;
 			int moveMade=0;
 			localCurrVal = 100000000;
-			//change this so it will change with the first move, but if the second move is not, I need a way to keep up with the first move through the recursion
 			
 			//translated from pseudocode
 			for(int i = 0; i < posMoves.size(); i++) {
 				GameBoard cloned = game.clone();
 				cloned.moveMade(posMoves.get(i));
-				
-				//bestMoveHere = posMoves.get(i);
+				//keep track of the move made this time
 				moveMade = posMoves.get(i);
 				localCurrVal = getValue(cloned, newLevel, !max, alpha, beta);
-				
+				//chose the current best value of the two possible values
 				bestVal = Min(bestVal, localCurrVal);
-				
+				//set beta to its new better value and change bestMoveHere to moveMade
 				if(bestVal >= localCurrVal) {
 					beta = Min(bestVal, beta);
 					bestMoveHere = moveMade;
 				}
-//				beta = Min(bestVal, beta);
+				//this is the cut (if the bot should never look down here)
 				if (bestVal <= alpha) {
 					bestMoveHere = moveMade;
 					StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
-					//bestMoveHere  = moveMade;
 					bestMove = bestMoveHere;
 					return bestVal;
 				}
-				
-				//set beta to its new better value and change bestMoveHere to moveMade
-//				if(bestVal < localCurrVal) {
-//					beta = Min(bestVal, beta);
-//					bestMoveHere = moveMade;
-//				}
 			}
-//			if(bestMoveHere==-1) {
-//				bestMoveHere = moveMade;
-//			}
+
 			StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
 			bestMove = bestMoveHere;
 			return bestVal;
@@ -185,17 +205,6 @@ public class Minimax {
 			return val2;
 		}
 	}
-	
-	public double goThroughMoves(List<Integer> possibleMoves, int bestVal,GameBoard game, int level, boolean max, double alpha, double beta){
-		for(int i=0; i < possibleMoves.size()-1; i++) {
-			GameBoard clone = game.clone();
-			clone.moveMade(possibleMoves.get(i));
-			
-		}
-		return 0;
-	}
-
-
 }
 
 	

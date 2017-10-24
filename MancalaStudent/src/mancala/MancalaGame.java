@@ -36,9 +36,10 @@ public class MancalaGame implements GameBoard{
 		SOUTH_PIT_END = NUM_PITS-1;
 		MANCALA_NORTH = state.length-1;
 		MANCALA_SOUTH = NUM_PITS;
-		playerNorth = new GUIPlayer("User");
+		//playerNorth = new GUIPlayer("User");
+		playerNorth =  new MinimaxPlayer("Computer10.1", true,10);
 		//playerSouth = new GUIPlayer("South");
-		playerSouth = new MinimaxPlayer("Computer", false,10);
+		playerSouth = new MinimaxPlayer("Computer10", false,10);
 		northsTurn = false;
 		// ask who should go first
 		int ans = JOptionPane.showConfirmDialog(null,
