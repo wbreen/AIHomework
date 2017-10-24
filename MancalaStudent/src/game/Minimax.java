@@ -55,6 +55,7 @@ public class Minimax {
 		//set up a bestVal variable to be used and reset each time through the alg
 		double bestVal;			//to return
 		int bestMoveHere = -1;	//to see which move is the best move from the array of possible moves
+		double localCurrVal;
 		
 		//go down to the next level for later in recursion
 		int newLevel = level-1;
@@ -69,6 +70,7 @@ public class Minimax {
 		else if(max) {
 			//bestVal is set really low to begin with 
 			bestVal = -100000000;
+			localCurrVal = -100000000;
 			int moveMade=0;
 			
 			//translated from pseudocode
@@ -85,8 +87,14 @@ public class Minimax {
 				//how do you determine if the move is the best move?
 				//if a move changes the alpha value, then it is the best possible move for it (for max) 
 				//if the move changes the beta value (for min), then it is the best possible move for min
+				localCurrVal = getValue(cloned, newLevel, !max, alpha, beta);
+				bestVal = Max(bestVal, localCurrVal);
 				
-				bestVal = Max(bestVal, getValue(cloned, newLevel, !max, alpha, beta));
+				if(bestVal <= localCurrVal) {
+					alpha = Max(alpha, bestVal);
+					bestMoveHere = moveMade;
+				} 
+//				alpha = Max(alpha, bestVal);
 				if (bestVal >= beta) {
 					bestMoveHere  = moveMade;
 					StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
@@ -94,15 +102,15 @@ public class Minimax {
 					return bestVal;
 				}
 				//set alpha to its new better value
-				if(bestVal > alpha) {
-					alpha = Max(alpha, bestVal);
-					bestMoveHere = moveMade;
-				} 
+//				if(bestVal > localCurrVal) {
+//					alpha = Max(alpha, bestVal);
+//					bestMoveHere = moveMade;
+//				} 
 				
 			}
-			if(bestMoveHere==-1) {
-				bestMoveHere = moveMade;
-			}
+//			if(bestMoveHere==-1) {
+//				bestMoveHere = moveMade;
+//			}
 			StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
 			bestMove = bestMoveHere;
 			return bestVal;
@@ -112,6 +120,7 @@ public class Minimax {
 			//newLevel--;
 			bestVal = 100000000;
 			int moveMade=0;
+			localCurrVal = 100000000;
 			//change this so it will change with the first move, but if the second move is not, I need a way to keep up with the first move through the recursion
 			
 			//translated from pseudocode
@@ -121,10 +130,17 @@ public class Minimax {
 				
 				//bestMoveHere = posMoves.get(i);
 				moveMade = posMoves.get(i);
+				localCurrVal = getValue(cloned, newLevel, !max, alpha, beta);
 				
-				bestVal = Min(bestVal, getValue(cloned, newLevel, !max, alpha, beta));
+				bestVal = Min(bestVal, localCurrVal);
+				
+				if(bestVal >= localCurrVal) {
+					beta = Min(bestVal, beta);
+					bestMoveHere = moveMade;
+				}
+//				beta = Min(bestVal, beta);
 				if (bestVal <= alpha) {
-					bestMoveHere  = moveMade;
+					bestMoveHere = moveMade;
 					StringWriter.println("Returning for state: "+game.getStateDescription()+": move "+bestMoveHere+" evaluating at "+bestVal);
 					//bestMoveHere  = moveMade;
 					bestMove = bestMoveHere;
@@ -132,10 +148,10 @@ public class Minimax {
 				}
 				
 				//set beta to its new better value and change bestMoveHere to moveMade
-				if(bestVal < beta) {
-					beta = Min(bestVal, beta);
-					bestMoveHere = moveMade;
-				}
+//				if(bestVal < localCurrVal) {
+//					beta = Min(bestVal, beta);
+//					bestMoveHere = moveMade;
+//				}
 			}
 //			if(bestMoveHere==-1) {
 //				bestMoveHere = moveMade;
@@ -152,7 +168,7 @@ public class Minimax {
 	
 	//helper method to tell if one value is bigger than another value
 	public double Max(double val1, double val2) {
-		if(val1 > val2) {
+		if(val1 >= val2) {
 			return val1;
 		}
 		else {
@@ -162,7 +178,7 @@ public class Minimax {
 	
 	//helper method to tell if one value is smaller than another value
 	public double Min(double val1, double val2) {
-		if(val1 < val2) {
+		if(val1 <= val2) {
 			return val1;
 		}
 		else {

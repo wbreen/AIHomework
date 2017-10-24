@@ -98,42 +98,42 @@ public class AlphaBetaTester extends TestCase {
 				"Returning for state: a: move 0 evaluating at 5.0\n";
 		flush = StringWriter.flushString();
 		assertEquals(answer,flush);
-		
-		Node root3 = buildGame3();
-		NodeGame game3 = new NodeGame(root3);
-
-		value = myMinimax.getValue(game3, 14, false, -1*Double.MAX_VALUE, Double.MAX_VALUE);
-		assertEquals(value, 3.0);
-		answer = "Getting value for state: a\n" + 
-				"Getting value for state: b\n" + 
-				"Getting value for state: e\n" + 
-				"Getting value for state: j\n" + 
-				"Returning heurustic: 7\n" + 
-				"Returning for state: e: move 0 evaluating at 7.0\n" + 
-				"Getting value for state: f\n" + 
-				"Getting value for state: k\n" + 
-				"Returning heurustic: 5\n" + 
-				"Returning for state: f: move 0 evaluating at 5.0\n" + 
-				"Returning for state: b: move 0 evaluating at 7.0\n" + 
-				"Getting value for state: c\n" + 
-				"Getting value for state: g\n" + 
-				"Getting value for state: n\n" + 
-				"Returning heurustic: 3\n" + 
-				"Getting value for state: o\n" + 
-				"Returning heurustic: 4\n" + 
-				"Returning for state: g: move 0 evaluating at 3.0\n" + 
-				"Returning for state: c: move 0 evaluating at 3.0\n" + 
-				"Getting value for state: d\n" + 
-				"Getting value for state: h\n" + 
-				"Getting value for state: p\n" + 
-				"Returning heurustic: 9\n" + 
-				"Getting value for state: q\n" + 
-				"Returning heurustic: 8\n" + 
-				"Returning for state: h: move 1 evaluating at 8.0\n" + 
-				"Returning for state: d: move 0 evaluating at 8.0\n" + 
-				"Returning for state: a: move 1 evaluating at 3.0\n";
-		flush = StringWriter.flushString();
-		assertEquals(answer,flush);
+//		
+//		Node root3 = buildGame3();
+//		NodeGame game3 = new NodeGame(root3);
+//
+//		value = myMinimax.getValue(game3, 14, false, -1*Double.MAX_VALUE, Double.MAX_VALUE);
+//		assertEquals(value, 3.0);
+//		answer = "Getting value for state: a\n" + 
+//				"Getting value for state: b\n" + 
+//				"Getting value for state: e\n" + 
+//				"Getting value for state: j\n" + 
+//				"Returning heurustic: 7\n" + 
+//				"Returning for state: e: move 0 evaluating at 7.0\n" + 
+//				"Getting value for state: f\n" + 
+//				"Getting value for state: k\n" + 
+//				"Returning heurustic: 5\n" + 
+//				"Returning for state: f: move 0 evaluating at 5.0\n" + 
+//				"Returning for state: b: move 0 evaluating at 7.0\n" + 
+//				"Getting value for state: c\n" + 
+//				"Getting value for state: g\n" + 
+//				"Getting value for state: n\n" + 
+//				"Returning heurustic: 3\n" + 
+//				"Getting value for state: o\n" + 
+//				"Returning heurustic: 4\n" + 
+//				"Returning for state: g: move 0 evaluating at 3.0\n" + 
+//				"Returning for state: c: move 0 evaluating at 3.0\n" + 
+//				"Getting value for state: d\n" + 
+//				"Getting value for state: h\n" + 
+//				"Getting value for state: p\n" + 
+//				"Returning heurustic: 9\n" + 
+//				"Getting value for state: q\n" + 
+//				"Returning heurustic: 8\n" + 
+//				"Returning for state: h: move 1 evaluating at 8.0\n" + 
+//				"Returning for state: d: move 0 evaluating at 8.0\n" + 
+//				"Returning for state: a: move 1 evaluating at 3.0\n";
+//		flush = StringWriter.flushString();
+//		assertEquals(answer,flush);
 	}
 
 	public Node buildGame() {
