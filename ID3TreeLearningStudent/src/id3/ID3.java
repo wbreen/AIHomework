@@ -10,6 +10,9 @@ import tree.Decision;
 import tree.TreeNode;
 public class ID3 {
 	
+	//Import the helper methods
+	ID3Helpers helpers = new ID3Helpers();
+	
 	// The ID3 Algorithm takes a collection of examples, the collection of Attributes used for making 
 	// the decision, and a default Decision.  
 	// It returns the decision tree.
@@ -21,16 +24,20 @@ public class ID3 {
 		
 		//else if all examples have the same classification, then return the classification
 		//TODO: finish this elif statement
-		else if(areAllSame(examples)) {
+		else if(helpers.areAllSame(examples)) {
 			//needs to change, this is just a temporary value
 			return defaultDecision;
 		}
 		//else if attributes is empty, then return Majority-Value(examples)
-		
+		else if(attributes.isEmpty()) {
+			return helpers.majorityValue(examples);
+		}
 		//else (see pseudocode)
 		
 		return defaultDecision;
 	}
+	
+	
 	
 	//returns if the given list of examples all have the same 
 	public boolean areAllSame(List<Example> myList) {
@@ -45,4 +52,7 @@ public class ID3 {
 		
 		return true;
 	}
+	
+	//returns the majority value of the list of examples given
+	
 }
