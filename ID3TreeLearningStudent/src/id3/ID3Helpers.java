@@ -57,4 +57,30 @@ public class ID3Helpers {
 		
 		return mostCommon;
 	}
+	
+	
+	//returns the attribute that will give you the most gain and the lowest remainder
+	public Attribute chooseAttribute(List<Attribute> attributes, List<Example> examples) {
+		Attribute toReturn = null;
+		for(Attribute a : attributes) {
+			
+		}
+		
+		return toReturn;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

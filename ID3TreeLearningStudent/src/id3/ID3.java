@@ -35,6 +35,7 @@ public class ID3 {
 		//else (see pseudocode)
 		else {
 			//best <-- ChooseAttribute (attributes, examples)
+					//whatever removes the most noise is the best attribute (the most gain)
 			//tree <-- a new decision tree with root test best
 			//for each value vi of best do
 				//examples(i) {elements of examples where best = vi}
