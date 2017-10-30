@@ -22,17 +22,27 @@ public class ID3 {
 			return defaultDecision;
 		}
 		
-		//else if all examples have the same classification, then return the classification
-		//TODO: finish this elif statement
+		//else if all examples have the same classification, then return the classification (decision)
+		//(if all remaining values are neg or pos, then return neg or positive)
 		else if(helpers.areAllSame(examples)) {
 			//needs to change, this is just a temporary value
-			return defaultDecision;
+			return examples.get(0).getDecision();
 		}
 		//else if attributes is empty, then return Majority-Value(examples)
 		else if(attributes.isEmpty()) {
 			return helpers.majorityValue(examples);
 		}
 		//else (see pseudocode)
+		else {
+			//best <-- ChooseAttribute (attributes, examples)
+			//tree <-- a new decision tree with root test best
+			//for each value vi of best do
+				//examples(i) {elements of examples where best = vi}
+				//subtree <-- id3(examples(i), attributes -- best, majorityValue(examples))
+				//add a branch to tree with label vi and subtree 'subtree'
+			//end for loop
+			//return tree
+		}
 		
 		return defaultDecision;
 	}

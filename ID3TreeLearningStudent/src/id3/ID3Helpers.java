@@ -18,31 +18,42 @@ public class ID3Helpers {
 				return false;
 			}
 		}
-		
 		return true;
 	}
 	
 //Majority Value
 	//returns the majority value of the list of examples given
 	public Decision majorityValue(List<Example> examples) {
+		//thing to return 
 		Decision mostCommon = examples.get(0).getDecision();
+		//create hashmap to contain each decision from the example and how often each decision is made 
 		HashMap<Decision, Integer> possibleDecisions = new HashMap<Decision, Integer>();
+		
 		//get each example and its decision
-		//for each Example in examples, add it to the HashMap
+		//for each Example in examples, add the Decision it made to the HashMap
 		for (Example e: examples) {
-			if(possibleDecisions.containsKey(e)) {
+			Decision key = e.getDecision();
+			if(possibleDecisions.containsKey(key)) {
 				//get the key
+				Integer timesOccured = possibleDecisions.get(key);
 				//add one to the value
-				possibleDecisions.getKey(e);
+				possibleDecisions.replace(key, timesOccured++);
 			}
 			//if not in the hashmap, add a key to the hashmap with key "e" and value 1
+			else {
+				possibleDecisions.put(e.getDecision(), 1);
+			}
 		}
-		//at the end of this loop, find the key with the biggest value, and return that key
 		
-		//create a hashmap  of the examples and how often each has happened
-		//keep track of how many times each example has occurred
-		//after you have gone through all the possible decisions in the Example list, return the one 
-			//that has happened most often
+		//at the end of this loop, find the key with the biggest value, and return that key
+		int maxValue = 0;
+		//find the max value in the hashmap and return the decision it is associated with
+		for(HashMap.Entry<Decision, Integer> decision : possibleDecisions.entrySet()) {
+			if (decision.getValue() > maxValue) {
+				mostCommon = decision.getKey();
+				maxValue = decision.getValue();
+			}
+		}
 		
 		return mostCommon;
 	}
