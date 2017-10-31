@@ -25,7 +25,6 @@ public class ID3 {
 		//else if all examples have the same classification, then return the classification (decision)
 		//(if all remaining values are neg or pos, then return neg or positive)
 		else if(helpers.areAllSame(examples)) {
-			//needs to change, this is just a temporary value
 			return examples.get(0).getDecision();
 		}
 		//else if attributes is empty, then return Majority-Value(examples)
@@ -36,14 +35,18 @@ public class ID3 {
 		else {
 			//best <-- ChooseAttribute (attributes, examples)
 					//whatever removes the most noise is the best attribute (the most gain)
+			Attribute best = helpers.chooseAttribute(attributes, examples);
 			//tree <-- a new decision tree with root test best
-			//for each value vi of best do
+			
+			//for each value vi of best do:
 				//examples(i) {elements of examples where best = vi}
 				//subtree <-- id3(examples(i), attributes -- best, majorityValue(examples))
 				//add a branch to tree with label vi and subtree 'subtree'
 			//end for loop
 			//return tree
 		}
+		//when adding to a tree, you need a value and the tree to add it to
+		//value is vi
 		
 		return defaultDecision;
 	}
