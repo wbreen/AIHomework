@@ -62,13 +62,29 @@ public class ID3Helpers {
 	//returns the attribute that will give you the most gain and the lowest remainder
 	//TODO: finish this method
 	//will need to return an attribute with a String name and String[] of answers
-	public Attribute chooseAttribute(List<Attribute> attributes, List<Example> examples) {
-		Attribute toReturn = null;
+	public List<Attribute> chooseAttribute(List<Attribute> attributes, List<Example> examples) {
+		List<Attribute> toReturn = null;
+		//the hashmap should contain the entropy of the attribute, and the attribute that 
+			//corresponds with that entropy
+		
+		//List<HashMap<Double, Attribute> entropy;
+		
 		for(Attribute a : attributes) {
 			
 		}
 		
 		return toReturn;
+	}
+	
+	public double getEntropy() {
+		double hello = 0.0;
+		
+		return hello;
+	}
+	
+	public double findGain(double entropyP, double entropyChild) {
+		double whatsUpDoc = 0;
+		return whatsUpDoc;
 	}
 	
 	
