@@ -54,7 +54,7 @@ public class ID3 {
 			
 			int bestLoc = attributes.indexOf(best);
 			Attribute tree = attributes.get(bestLoc);
-			attributes.remove(bestLoc);
+			//attributes.remove(bestLoc);
 			
 			//best.remove(0);
 			

@@ -64,25 +64,31 @@ public class ID3Helpers {
 		//the hashmap should contain the entropy of the attribute, and the attribute that 
 			//corresponds with that entropy
 		
-		//List<HashMap<Double, Attribute> entropy;
-		
+		//List<HashMap<Double, Attribute>> entropy;
+		double entropySys = getEntropy(examples);
+		double maxGain = 0;
 		for(Attribute a : attributes) {
-			
+			double gain = findGain(entropySys, a, examples);
+			if (gain > maxGain) {
+				maxGain = gain;
+				toReturn = a;
+			}
 		}
 		
 		return toReturn;
 	}
 	
 	//given a list of examples, calculate the total entropy in the system
+	//have getEntropy return the info left from the attribute and the list of examples given
 	public double getEntropy(List<Example> examples) {
 		//what to return
 		double entropy = 0.0;
 		//denominator (sum of all/number of decisions made)
-		int sum=0;
+		double sum=0;
 		//numerator of each
 		//int numThisVal;
 		
-		int[] numDecisions = new int[1000];
+		double[] numDecisions = new double[10];
 		List<String> decisionNames = new ArrayList<>();
 		
 		//for each example, add it to the array+list if it isnt in [], or increase [] if it is
@@ -99,13 +105,13 @@ public class ID3Helpers {
 			}
 		}
 	//now numDecisions contains the number of all decisions made and decisionNames= their names
-		for (int i=0; i<numDecisions.length; i++) {
+		for (int i=0; i<numDecisions.length-1; i++) {
 			sum = sum + numDecisions[i];
 		}
 		
 		//now sum contains the total number of decisions made
-		for (int i=0; i<numDecisions.length; i++) {
-			double frac = numDecisions[i]/sum;
+		for (int i=0; i<decisionNames.size()-1; i++) {
+			double frac = ((Double) numDecisions[i])/sum;
 			double logB2 = (Math.log(frac)/Math.log(2));
 			entropy = entropy + ((frac)*logB2);
 		}
@@ -131,26 +137,35 @@ public class ID3Helpers {
 		int[] timesVoAtt = new int [attr.getNumValues()];
 		List<String> attNames = new ArrayList<>();
 		Set<String> possibleVals = attr.getPossibleAnswers();
+		List<List<Example>> listOfEx = new ArrayList<>();
+		
 		for (String val : possibleVals) {
 			attNames.add(val);
+			listOfEx.add(new ArrayList<Example>() );
 		}
 		for(Example e: examples) {
 			//for each value, if the example is equal to an attribute value seen before,
-			if()) {
-				
+			if(attNames.contains(e.getValue(attr))) {
+				int index = attNames.indexOf(e.getValue(attr));
+				timesVoAtt[index] = timesVoAtt[index] +1;
+				listOfEx.get(index).add(e);
 			}
 				//add it to the array at the correct spot
 			//if not, add the example string to the ArrayList and also add it to the appropriate
-				//locatin in the []
+				//location in the []
 		}
-		
-//		for(int i = 0; i< timesVoAtt.length; i++) {
-//			String thisString = possibleAns.
-//			for(Example e : examples) {
-//				
-//			}
-//		}
+		double numChildren = 0;
+		for(int i = 0; i< timesVoAtt.length; i++) {
+			numChildren = numChildren + timesVoAtt[i];
+		}
 		//create a new list of only the specific examples that contain the child attribute
+		double weight = 0;
+		
+		for(List<Example> examp : listOfEx) {
+			weight = examp.size()/numChildren;
+			double entChild = getEntropy(examp);
+			weightChild = weightChild + (weight*entChild);
+		}
 		//for that list, find the info left
 		
 		
