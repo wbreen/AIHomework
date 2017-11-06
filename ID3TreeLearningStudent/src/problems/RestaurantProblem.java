@@ -104,7 +104,8 @@ public class RestaurantProblem {
 		attTypes.put(attributes.get(9), waits);
 		
 		// Now actually populate the examples
-		for(int i = 0; i<noExamples.length; i++){
+//		for(int i = 0; i<noExamples.length; i++){
+		for(int i = 0; i<4; i++) {
 			HashMap<Attribute, String> attValue = new HashMap<Attribute, String>();
 			for(int j = 0; j< noExamples[i].length; j++){
 				attValue.put(attributes.get(j),attTypes.get(attributes.get(j))[noExamples[i][j]]);
@@ -113,7 +114,8 @@ public class RestaurantProblem {
 			examples.add(new Example(attValue, dont));
 		}
 
-		for(int i = 0; i<yesExamples.length; i++){
+//		for(int i = 0; i<yesExamples.length; i++){
+		for(int i = 0; i<2; i++) {
 			HashMap<Attribute, String> attValue = new HashMap<Attribute, String>();
 			for(int j = 0; j< yesExamples[i].length; j++){
 				attValue.put(attributes.get(j),attTypes.get(attributes.get(j))[yesExamples[i][j]]);
