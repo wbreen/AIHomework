@@ -31,6 +31,36 @@ public class Breed extends Algorithm
 	 */
 	public Expression apply (Expression mom, Expression dad, double rate)
 	{
+		if(mom.equals(dad)) {
+			double giveMom = random.nextDouble();
+			if(rate > giveMom) {
+				return mom;
+			}
+			else {
+				return dad;
+			}
+		}
+		else {
+			double spliceWhich = random.nextDouble();
+			if(rate > spliceWhich) {
+				return splice(dad, mom, rate);
+			}
+			else {
+				return splice(mom, dad, rate);
+			}
+		}
+		//return null;
+	}
+	
+	public Expression splice(Expression p1, Expression p2, double rate) {
+		
+		
+		//part 2
+		double randomSpl = random.nextDouble();
+		if(rate > randomSpl || p1.getDegree()==0) {
+			return p1.copy();
+		}
+		
 		return null;
 	}
 

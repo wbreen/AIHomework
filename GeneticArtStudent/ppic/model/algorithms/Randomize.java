@@ -35,10 +35,10 @@ public class Randomize extends Algorithm
 		double possiblityOfZero = random.nextDouble();
 		double possiblityOfOne = random.nextDouble();
 
-		if(rate < possiblityOfZero) {
+		if(rate > possiblityOfZero) {
 			return makeZeroArgumentExpression();
 		}
-		else if(rate < possiblityOfOne) {
+		else if(rate > possiblityOfOne) {
 			return makeOneArgumentExpression(getRandomExpression(rate*1.33));
 		}
 		else {
