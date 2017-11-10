@@ -8,6 +8,7 @@ public class Mutate extends Algorithm
 {
 
 
+	Randomize rand = new Randomize();
 	/*
 	 * Pseudocode for mutating:
 	 * apply (ex, rate):
@@ -34,8 +35,34 @@ public class Mutate extends Algorithm
 
 	public Expression apply (Expression expr, double rate)
 	{
-		
-		return null;
+		double noChange = random.nextDouble();
+		Expression myCopy = expr.copy();
+		if(rate >= noChange) {
+			return myCopy;
+		}
+		else {
+			//no children
+			if(expr.getDegree()==0) {
+				double choose = random.nextDouble();
+				//new random expression
+				if(choose > .5) {
+					return rand.getRandomExpression(rate);
+				}
+				//mutate the expression a little
+				else {
+					return mutateConstant(expr);
+				}
+			}
+			//only has one child
+			if(expr.getDegree()==1) {
+				return hasOneChild(expr, rate);
+			}
+			else {
+				return hasTwoChild(expr, rate);
+			}
+			
+		}
+		//return null;
 	}
 
 
@@ -58,6 +85,78 @@ public class Mutate extends Algorithm
 		}
 
 		else return tfunc.copy();
+	}
+	
+	//returns an expression if the expression only has one child
+	public Expression hasOneChild(Expression expr, double rate) {
+		Expression myCopy = expr.copy();
+		double choose = random.nextDouble();
+		double divideOn = 1.0/6.0;
+		System.out.println(divideOn);
+		//no change
+		if(choose < divideOn) {
+			return myCopy;
+		}
+		//child of expression
+		if(2*divideOn > choose && choose > divideOn) {
+			myCopy = expr.getLeft();
+			return myCopy;
+		}
+		//new 1-arg with base of expr and new child
+		if(3*divideOn > choose && choose > 2*divideOn) {
+			myCopy.setLeft(rand.getRandomExpression(rate));
+			return myCopy;
+		}
+		//new 1-arg with random base and expr as child
+		if(4*divideOn > choose && choose > 3*divideOn) {
+			Expression newExp = rand.getRandomExpression(rate);
+			newExp.setLeft(myCopy);
+			return newExp;
+		}
+		//new 2-arg with random base + right child, and expr as left child
+		if(5*divideOn > choose && choose > 4*divideOn) {
+			Expression newExp = rand.getRandomExpression(rate);
+			newExp.setRight(rand.getRandomExpression(rate));
+			newExp.setLeft(myCopy);
+			return newExp;
+		}
+		//new 2-arg with random base + left child, and expr as right child
+		else {
+			Expression newExp = rand.getRandomExpression(rate);
+			newExp.setLeft(rand.getRandomExpression(rate));
+			newExp.setRight(myCopy);
+			return newExp;
+		}
+	}
+	
+	
+	//returns an expression if the exp given has two children
+	public Expression hasTwoChild(Expression expr, double rate) {
+		Expression myCopy = expr.copy();
+		Expression rightChild = myCopy.getRight();
+		Expression leftChild = myCopy.getLeft();
+		double which = random.nextDouble();
+		double divideBy = 1.0/5/0;
+		//return a copy with no change
+		if(divideBy > which) {
+			return myCopy;
+		}
+		//return a copy of the left child with no change
+		if(2*divideBy > which && which > divideBy) {
+			return myCopy.getLeft();
+		}
+		//return a copy of the right child with no change
+		if(3*divideBy > which && which > 2* divideBy) {
+			return myCopy.getRight();
+		}
+		//return replaceBase() with the left then right child
+		if(4*divideBy > which && which > 3*divideBy) {
+			return rand.randomReplaceBase(leftChild, rightChild, rate);
+		}
+		//return replaceBase() with right then left child
+		else {
+			return rand.randomReplaceBase(rightChild, leftChild, rate);
+		}
 	}
 
 }

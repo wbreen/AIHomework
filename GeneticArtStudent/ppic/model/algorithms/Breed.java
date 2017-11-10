@@ -33,7 +33,7 @@ public class Breed extends Algorithm
 	{
 		if(mom.equals(dad)) {
 			double giveMom = random.nextDouble();
-			if(rate > giveMom) {
+			if(rate >= giveMom) {
 				return mom;
 			}
 			else {
@@ -42,7 +42,7 @@ public class Breed extends Algorithm
 		}
 		else {
 			double spliceWhich = random.nextDouble();
-			if(rate > spliceWhich) {
+			if(rate >= spliceWhich) {
 				return splice(dad, mom, rate);
 			}
 			else {
@@ -53,15 +53,73 @@ public class Breed extends Algorithm
 	}
 	
 	public Expression splice(Expression p1, Expression p2, double rate) {
-		
+		//part 1
+		Expression p2Part = findCopiedPart(p2.copy(), rate);
+//		boolean p2isCopied = false;
+//		while (!p2isCopied) {
+//			double randomL = random.nextDouble();
+//			double randomR = random.nextDouble();
+//			if(rate >= randomL) {
+//				p2Part = p2Part.getLeft();
+//			}
+//			else if (rate >= randomR) {
+//				p2Part = p2Part.getRight();
+//			}
+//			else {
+//				p2Part = p2Part.copy();
+//				//p2isCopied = true;
+//			}
+//		}
 		
 		//part 2
 		double randomSpl = random.nextDouble();
-		if(rate > randomSpl || p1.getDegree()==0) {
-			return p1.copy();
+		//double randomSpl2 = random.nextDouble();
+		Expression p1Copy = p1.copy();
+		boolean p1IsntDone = false;
+		while(p1IsntDone == false) {
+			if(rate >= randomSpl || p1.getDegree()==0) {
+				p1IsntDone = true;
+			}
+			else if(p1.getDegree() == 1) {
+				p1Copy.setRight(p2Part);
+			}
+			else {
+				double randomSide = random.nextDouble();
+				if(randomSide >=.5) {
+					p1Copy.setLeft(p2Part);
+					p1IsntDone = true;
+				}
+				else {
+					p1Copy.setRight(p2Part);
+					p1IsntDone = true;
+				}
+			}
 		}
+		return p1Copy;
+	}
+	
+	
+	
+//	make a copy of a random part of p2 as follows:
+//		 *       	rate % of the time follow the left child if it has one
+//		 *       	else rate % of the time follow the right child if it has one
+//		 *          else, copy out the spot where you are.
+//		 *       Call this part of p2 "p2Part"
+	
+	public Expression findCopiedPart(Expression p2, double rate) {
+		Expression p2Part = null;
+		double left = random.nextDouble();
+		double right = random.nextDouble();
 		
-		return null;
+		if(rate >= left) {
+			p2Part = findCopiedPart(p2.getLeft(), rate);
+		}
+		else if(rate >= right){
+			p2Part = findCopiedPart(p2.getRight(), rate);
+		} else {
+			return p2Part = p2.copy();
+		}
+		return p2Part;
 	}
 
 

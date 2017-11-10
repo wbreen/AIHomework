@@ -17,7 +17,7 @@ public class Main
     public static void main (String args[])
     {
         // Comment out if you are not testing.
-       // Algorithm.setRandom(new PredictablyRandom());
+        Algorithm.setRandom(new PredictablyRandom());
 
         JFrame frame = new JFrame(TITLE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
