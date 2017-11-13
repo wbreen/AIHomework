@@ -33,13 +33,14 @@ public class Randomize extends Algorithm
 	public Expression getRandomExpression (double rate)
 	{
 		double possiblityOfZero = random.nextDouble();
-		double possiblityOfOne = random.nextDouble();
+		
 		double newRate = rate*1.33;
 
-		if(rate > possiblityOfZero) {
+		if(rate >= possiblityOfZero) {
 			return makeZeroArgumentExpression();
 		}
-		if(rate > possiblityOfOne) {
+		double possiblityOfOne = random.nextDouble();
+		if(rate >= possiblityOfOne) {
 			return makeOneArgumentExpression(getRandomExpression(newRate));
 		}
 		else {
@@ -64,12 +65,12 @@ public class Randomize extends Algorithm
 	public Expression randomReplaceBase (Expression left, Expression right, double rate)
 	{
 		double zeroArgument = random.nextDouble();
-		double oneArgument = random.nextDouble();
 		
-		if(rate > zeroArgument) {
+		if(rate >= zeroArgument) {
 			return makeZeroArgumentExpression();
 		}
-		else if(rate > oneArgument) {
+		double oneArgument = random.nextDouble();
+		if(rate >= oneArgument) {
 			return makeOneArgumentExpression(left);
 		}
 		else {
