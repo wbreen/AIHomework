@@ -62,6 +62,7 @@ public class Mutate extends Algorithm
 			if(degree==1) {
 				return hasOneChild(expr, rate);
 			}
+			//has two children
 			else {
 				return hasTwoChild(expr, rate);
 			}
@@ -99,8 +100,8 @@ public class Mutate extends Algorithm
 		double divideOn = 1.0/6.0;
 		System.out.println(divideOn);
 		//no change
-//		if(divideOn > choose) {
-		if(rate > choose) {
+		if(divideOn > choose) {
+//		if(rate > choose) {
 			return myCopy;
 		}
 		//child of expression
