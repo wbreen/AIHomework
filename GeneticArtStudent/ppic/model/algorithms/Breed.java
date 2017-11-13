@@ -110,16 +110,14 @@ public class Breed extends Algorithm
 		Expression p2Part = null;
 		double left = random.nextDouble();
 		
-		//follow left child if it has one
+					//follow left child if it has one
 		if(rate > left && p2.getLeft() != null) {
 			p2Part = p2.getLeft();
-		}
-		//follow the right child if it has one
+		}			//follow the right child if it has one
 		double right = random.nextDouble();
 		if(rate > right && p2.getRight() != null) {
 			p2Part = p2.getRight();
-			
-		} else { //copy out the spot where you are 
+		} else {		//copy out the spot where you are 
 			p2Part = p2.copy();
 		}
 		return p2Part;
