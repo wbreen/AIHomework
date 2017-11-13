@@ -1,5 +1,9 @@
 package ppic.model.algorithms;
 
+/**
+ *  Author: William Breen
+ */
+
 import ppic.model.*;
 import ppic.model.operators.APPExtImage;
 import ppic.util.Reflection;
@@ -33,9 +37,9 @@ public class Breed extends Algorithm
 	{
 //		System.out.println("mom: " + mom.toString());
 //		System.out.println("dad: " + dad.toString());
-		System.out.println("rate: " + rate);
+//		System.out.println("rate: " + rate);
 		if(mom.equals(dad)) {
-			System.out.println("mom equals dad");
+//			System.out.println("mom equals dad");
 			double giveMom = random.nextDouble();
 			if(rate >= giveMom) {
 				return mom.copy();
@@ -45,9 +49,9 @@ public class Breed extends Algorithm
 			}
 		}
 		else {
-			System.out.println("Mom doesnt equal dad");
+//			System.out.println("Mom doesnt equal dad");
 			double spliceWhich = random.nextDouble();
-			System.out.println("spliceWhich is : " +spliceWhich);
+//			System.out.println("spliceWhich is : " +spliceWhich);
 			if(rate >= spliceWhich) {
 				return splice(dad.copy(), mom.copy(), rate);
 			}
@@ -69,14 +73,14 @@ public class Breed extends Algorithm
 		//rate % of time or if p1 has no children
 		if(rate > randomSpl || p1.getDegree()==0) {
 			//p1IsntDone = true;
-			System.out.println("Just returning a copy of p1");
+//			System.out.println("Just returning a copy of p1");
 			p1Copy = p1.copy();
 			return p1Copy;
 		}
 		//if p1 has one child
 		else if(p1.getDegree() == 1) {
 			p1Copy.setLeft(p2Part);
-			System.out.println("set the left child to p2Part, degree was 1");
+//			System.out.println("set the left child to p2Part, degree was 1");
 			return p1Copy;
 		}
 		//if p1 has two children
@@ -85,12 +89,12 @@ public class Breed extends Algorithm
 			if(randomSide >=.5) {
 				p1Copy.setLeft(p2Part);
 				//p1IsntDone = true;
-				System.out.println("set the left child to p2Part, degree was 2");
+//				System.out.println("set the left child to p2Part, degree was 2");
 				return p1Copy;
 			}
 			else {
 				p1Copy.setRight(p2Part);
-				System.out.println("set the right child to p2Part, degree was 2");
+//				System.out.println("set the right child to p2Part, degree was 2");
 				//p1IsntDone = true;
 				return p1Copy;
 			}

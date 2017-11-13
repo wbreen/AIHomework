@@ -1,5 +1,9 @@
 package ppic.model.algorithms;
 
+/**
+ *  Author: William Breen
+ */
+
 import ppic.model.*;
 import ppic.model.operators.PPConstant;
 
@@ -37,11 +41,11 @@ public class Mutate extends Algorithm
 	{
 		double noChange = random.nextDouble();
 		Expression myCopy = expr.copy();
-		System.out.println("rate was: " + rate);
-		System.out.println("noChange was " + noChange);
-		System.out.println("The degree of the expression is: " + expr.getDegree());
+//		System.out.println("rate was: " + rate);
+//		System.out.println("noChange was " + noChange);
+//		System.out.println("The degree of the expression is: " + expr.getDegree());
 		if(rate >= noChange) {
-			System.out.println("Didn't change anything in mutate");
+//			System.out.println("Didn't change anything in mutate");
 			return myCopy;
 		}
 		else {
@@ -51,20 +55,20 @@ public class Mutate extends Algorithm
 				double choose = random.nextDouble();
 				//new random expression
 				if(choose >= .5) {
-					return rand.getRandomExpression(rate);
+					return rand.makeZeroArgumentExpression();
 				}
 				//mutate the expression a little
 				else {
-					return mutateConstant(expr);
+					return mutateConstant(myCopy);
 				}
 			}
 			//only has one child
 			if(degree==1) {
-				return hasOneChild(expr, rate);
+				return hasOneChild(myCopy, rate);
 			}
 			//has two children
 			else {
-				return hasTwoChild(expr, rate);
+				return hasTwoChild(myCopy, rate);
 			}
 			
 		}
@@ -98,49 +102,52 @@ public class Mutate extends Algorithm
 		Expression myCopy = expr.copy();
 		double choose = random.nextDouble();
 		double divideOn = 1.0/6.0;
-		System.out.println(divideOn);
 		//no change
-		if(divideOn > choose) {
+		if(divideOn >= choose) {
 //		if(rate > choose) {
 			return myCopy;
 		}
 		//child of expression
-		if(2*divideOn > choose && choose > divideOn) {
+		else if(2*divideOn >= choose && choose > divideOn) {
 //		choose = random.nextDouble();
 //		if(rate > choose) {
-			myCopy = expr.getLeft();
+			myCopy = myCopy.getLeft();
 			return myCopy;
 		}
 		//new 1-arg with base of expr and new child
-		if(3*divideOn > choose && choose > 2*divideOn) {
+		else if(3*divideOn >= choose && choose > 2*divideOn) {
 //		choose = random.nextDouble();
 //		if(rate > choose) {
-			myCopy.setLeft(rand.getRandomExpression(rate));
+			myCopy.setLeft(rand.makeZeroArgumentExpression());
+//			return rand.makeOneArgumentExpression(myCopy);
 			return myCopy;
 		}
 		//new 1-arg with random base and expr as child
-		if(4*divideOn > choose && choose > 3*divideOn) {
+		else if(4*divideOn >= choose && choose > 3*divideOn) {
 //		choose = random.nextDouble();
 //		if(rate > choose) {
-			Expression newExp = rand.getRandomExpression(rate);
-			newExp.setLeft(myCopy);
-			return newExp;
+//			Expression newExp = rand.getRandomExpression(1.0);
+//			newExp.setLeft(myCopy);
+			return rand.makeOneArgumentExpression(myCopy);
+//			return newExp;
 		}
 		//new 2-arg with random base + right child, and expr as left child
-		if(5*divideOn > choose && choose > 4*divideOn) {
+		else if(5*divideOn >= choose && choose > 4*divideOn) {
 //		choose = random.nextDouble();
 //		if(rate > choose) {
-			Expression newExp = rand.getRandomExpression(rate);
-			newExp.setRight(rand.getRandomExpression(rate));
-			newExp.setLeft(myCopy);
-			return newExp;
+			Expression newExp = rand.getRandomExpression(1.0);
+//			newExp.setRight(rand.getRandomExpression(1.0));
+//			newExp.setLeft(myCopy);
+			return rand.makeTwoArgumentExpression(myCopy, newExp);
+//			return newExp;
 		}
 		//new 2-arg with random base + left child, and expr as right child
 		else {
 			Expression newExp = rand.getRandomExpression(rate);
-			newExp.setLeft(rand.getRandomExpression(rate));
-			newExp.setRight(myCopy);
-			return newExp;
+//			newExp.setLeft(rand.getRandomExpression(rate));
+//			newExp.setRight(myCopy);
+			return rand.makeTwoArgumentExpression(newExp, myCopy);
+//			return newExp;
 		}
 	}
 	
@@ -152,27 +159,26 @@ public class Mutate extends Algorithm
 		Expression leftChild = myCopy.getLeft();
 		double which = random.nextDouble();
 		double divideBy = 1.0/5.0;
-		System.out.println("DivideBy is :" + divideBy);
-		System.out.println("which is : " + which);
+//		System.out.println("which is : " + which);
 		//return a copy with no change
-//		if(divideBy > which) {
-		if(rate > which) {
+		if(divideBy >= which) {
+//		if(rate > which) {
 			return myCopy;
 		}
 		//return a copy of the left child with no change
-		if(2*divideBy > which && which > divideBy) {
+		else if(2*divideBy >= which && which > divideBy) {
 //		which = random.nextDouble();
 //		if(rate > which) {
 			return myCopy.getLeft();
 		}
 		//return a copy of the right child with no change
-		if(3*divideBy > which && which > 2* divideBy) {
+		else if(3*divideBy >= which && which > 2*divideBy) {
 //		which = random.nextDouble();
 //		if(rate > which) {
 			return myCopy.getRight();
 		}
 		//return replaceBase() with the left then right child
-		if(4*divideBy > which && which > 3*divideBy) {
+		else if(4*divideBy >= which && which > 3*divideBy) {
 //		which = random.nextDouble();
 //		if(rate > which) {
 			return rand.randomReplaceBase(leftChild, rightChild, rate);

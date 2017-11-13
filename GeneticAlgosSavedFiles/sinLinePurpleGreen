@@ -1,0 +1,1 @@
+(PPColorPerlin (PPAdd (PPRGBYCrCb (PPX)) (PPMul (PPDiv (PPY) (PPX)) (PPBWPerlin (PPAtan (PPX)) (PPY)))) (PPMul (PPDiv (PPY) (PPX)) (PPBWPerlin (PPAtan (PPX)) (PPY))))

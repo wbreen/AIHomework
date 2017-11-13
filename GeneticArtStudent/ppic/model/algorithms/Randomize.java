@@ -1,6 +1,8 @@
 package ppic.model.algorithms;
 
-
+/*
+ *	author: William Breen
+ */
 
 import ppic.model.*;
 import ppic.model.operators.PPConstant;
