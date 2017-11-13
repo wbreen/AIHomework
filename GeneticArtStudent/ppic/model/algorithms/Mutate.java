@@ -37,15 +37,20 @@ public class Mutate extends Algorithm
 	{
 		double noChange = random.nextDouble();
 		Expression myCopy = expr.copy();
+		System.out.println("rate was: " + rate);
+		System.out.println("noChange was " + noChange);
+		System.out.println("The degree of the expression is: " + expr.getDegree());
 		if(rate >= noChange) {
+			System.out.println("Didn't change anything in mutate");
 			return myCopy;
 		}
 		else {
 			//no children
-			if(expr.getDegree()==0) {
+			int degree = expr.getDegree();
+			if(degree==0) {
 				double choose = random.nextDouble();
 				//new random expression
-				if(choose > .5) {
+				if(choose >= .5) {
 					return rand.getRandomExpression(rate);
 				}
 				//mutate the expression a little
@@ -54,7 +59,7 @@ public class Mutate extends Algorithm
 				}
 			}
 			//only has one child
-			if(expr.getDegree()==1) {
+			if(degree==1) {
 				return hasOneChild(expr, rate);
 			}
 			else {
@@ -94,27 +99,36 @@ public class Mutate extends Algorithm
 		double divideOn = 1.0/6.0;
 		System.out.println(divideOn);
 		//no change
-		if(choose < divideOn) {
+//		if(divideOn > choose) {
+		if(rate > choose) {
 			return myCopy;
 		}
 		//child of expression
 		if(2*divideOn > choose && choose > divideOn) {
+//		choose = random.nextDouble();
+//		if(rate > choose) {
 			myCopy = expr.getLeft();
 			return myCopy;
 		}
 		//new 1-arg with base of expr and new child
 		if(3*divideOn > choose && choose > 2*divideOn) {
+//		choose = random.nextDouble();
+//		if(rate > choose) {
 			myCopy.setLeft(rand.getRandomExpression(rate));
 			return myCopy;
 		}
 		//new 1-arg with random base and expr as child
 		if(4*divideOn > choose && choose > 3*divideOn) {
+//		choose = random.nextDouble();
+//		if(rate > choose) {
 			Expression newExp = rand.getRandomExpression(rate);
 			newExp.setLeft(myCopy);
 			return newExp;
 		}
 		//new 2-arg with random base + right child, and expr as left child
 		if(5*divideOn > choose && choose > 4*divideOn) {
+//		choose = random.nextDouble();
+//		if(rate > choose) {
 			Expression newExp = rand.getRandomExpression(rate);
 			newExp.setRight(rand.getRandomExpression(rate));
 			newExp.setLeft(myCopy);
@@ -136,21 +150,30 @@ public class Mutate extends Algorithm
 		Expression rightChild = myCopy.getRight();
 		Expression leftChild = myCopy.getLeft();
 		double which = random.nextDouble();
-		double divideBy = 1.0/5/0;
+		double divideBy = 1.0/5.0;
+		System.out.println("DivideBy is :" + divideBy);
+		System.out.println("which is : " + which);
 		//return a copy with no change
-		if(divideBy > which) {
+//		if(divideBy > which) {
+		if(rate > which) {
 			return myCopy;
 		}
 		//return a copy of the left child with no change
 		if(2*divideBy > which && which > divideBy) {
+//		which = random.nextDouble();
+//		if(rate > which) {
 			return myCopy.getLeft();
 		}
 		//return a copy of the right child with no change
 		if(3*divideBy > which && which > 2* divideBy) {
+//		which = random.nextDouble();
+//		if(rate > which) {
 			return myCopy.getRight();
 		}
 		//return replaceBase() with the left then right child
 		if(4*divideBy > which && which > 3*divideBy) {
+//		which = random.nextDouble();
+//		if(rate > which) {
 			return rand.randomReplaceBase(leftChild, rightChild, rate);
 		}
 		//return replaceBase() with right then left child

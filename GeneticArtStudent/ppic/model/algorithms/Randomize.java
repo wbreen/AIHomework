@@ -36,11 +36,11 @@ public class Randomize extends Algorithm
 		
 		double newRate = rate*1.33;
 
-		if(rate >= possiblityOfZero) {
+		if(rate > possiblityOfZero) {
 			return makeZeroArgumentExpression();
 		}
 		double possiblityOfOne = random.nextDouble();
-		if(rate >= possiblityOfOne) {
+		if(rate > possiblityOfOne) {
 			return makeOneArgumentExpression(getRandomExpression(newRate));
 		}
 		else {
@@ -66,11 +66,11 @@ public class Randomize extends Algorithm
 	{
 		double zeroArgument = random.nextDouble();
 		
-		if(rate >= zeroArgument) {
+		if(rate > zeroArgument) {
 			return makeZeroArgumentExpression();
 		}
 		double oneArgument = random.nextDouble();
-		if(rate >= oneArgument) {
+		if(rate > oneArgument) {
 			return makeOneArgumentExpression(left);
 		}
 		else {

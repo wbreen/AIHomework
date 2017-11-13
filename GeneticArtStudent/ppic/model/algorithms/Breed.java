@@ -31,22 +31,28 @@ public class Breed extends Algorithm
 	 */
 	public Expression apply (Expression mom, Expression dad, double rate)
 	{
+//		System.out.println("mom: " + mom.toString());
+//		System.out.println("dad: " + dad.toString());
+		System.out.println("rate: " + rate);
 		if(mom.equals(dad)) {
+			System.out.println("mom equals dad");
 			double giveMom = random.nextDouble();
 			if(rate >= giveMom) {
-				return mom;
+				return mom.copy();
 			}
 			else {
-				return dad;
+				return dad.copy();
 			}
 		}
 		else {
+			System.out.println("Mom doesnt equal dad");
 			double spliceWhich = random.nextDouble();
+			System.out.println("spliceWhich is : " +spliceWhich);
 			if(rate >= spliceWhich) {
-				return splice(dad, mom, rate);
+				return splice(dad.copy(), mom.copy(), rate);
 			}
 			else {
-				return splice(mom, dad, rate);
+				return splice(mom.copy(), dad.copy(), rate);
 			}
 		}
 		//return null;
@@ -55,47 +61,41 @@ public class Breed extends Algorithm
 	public Expression splice(Expression p1, Expression p2, double rate) {
 		//part 1
 		Expression p2Part = findCopiedPart(p2.copy(), rate);
-//		boolean p2isCopied = false;
-//		while (!p2isCopied) {
-//			double randomL = random.nextDouble();
-//			double randomR = random.nextDouble();
-//			if(rate >= randomL) {
-//				p2Part = p2Part.getLeft();
-//			}
-//			else if (rate >= randomR) {
-//				p2Part = p2Part.getRight();
-//			}
-//			else {
-//				p2Part = p2Part.copy();
-//				//p2isCopied = true;
-//			}
-//		}
 		
 		//part 2
 		double randomSpl = random.nextDouble();
-		//double randomSpl2 = random.nextDouble();
 		Expression p1Copy = p1.copy();
-		boolean p1IsntDone = false;
-		while(p1IsntDone == false) {
-			if(rate >= randomSpl || p1.getDegree()==0) {
-				p1IsntDone = true;
-			}
-			else if(p1.getDegree() == 1) {
-				p1Copy.setRight(p2Part);
+		
+		//rate % of time or if p1 has no children
+		if(rate > randomSpl || p1.getDegree()==0) {
+			//p1IsntDone = true;
+			System.out.println("Just returning a copy of p1");
+			p1Copy = p1.copy();
+			return p1Copy;
+		}
+		//if p1 has one child
+		else if(p1.getDegree() == 1) {
+			p1Copy.setLeft(p2Part);
+			System.out.println("set the left child to p2Part, degree was 1");
+			return p1Copy;
+		}
+		//if p1 has two children
+		else {
+			double randomSide = random.nextDouble();
+			if(randomSide >=.5) {
+				p1Copy.setLeft(p2Part);
+				//p1IsntDone = true;
+				System.out.println("set the left child to p2Part, degree was 2");
+				return p1Copy;
 			}
 			else {
-				double randomSide = random.nextDouble();
-				if(randomSide >=.5) {
-					p1Copy.setLeft(p2Part);
-					p1IsntDone = true;
-				}
-				else {
-					p1Copy.setRight(p2Part);
-					p1IsntDone = true;
-				}
+				p1Copy.setRight(p2Part);
+				System.out.println("set the right child to p2Part, degree was 2");
+				//p1IsntDone = true;
+				return p1Copy;
 			}
 		}
-		return p1Copy;
+		//return p1Copy;
 	}
 	
 	
@@ -109,15 +109,18 @@ public class Breed extends Algorithm
 	public Expression findCopiedPart(Expression p2, double rate) {
 		Expression p2Part = null;
 		double left = random.nextDouble();
-		double right = random.nextDouble();
 		
-		if(rate >= left) {
-			p2Part = findCopiedPart(p2.getLeft(), rate);
+		//follow left child if it has one
+		if(rate > left && p2.getLeft() != null) {
+			p2Part = p2.getLeft();
 		}
-		else if(rate >= right){
-			p2Part = findCopiedPart(p2.getRight(), rate);
-		} else {
-			return p2Part = p2.copy();
+		//follow the right child if it has one
+		double right = random.nextDouble();
+		if(rate > right && p2.getRight() != null) {
+			p2Part = p2.getRight();
+			
+		} else { //copy out the spot where you are 
+			p2Part = p2.copy();
 		}
 		return p2Part;
 	}
