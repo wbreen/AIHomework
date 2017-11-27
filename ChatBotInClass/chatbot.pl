@@ -1,3 +1,4 @@
+%William Breen
 %Top-level query.
 
 chat:- write('Welcome to the Kids Museum.  What can I help you with?'),nl,listen.
@@ -17,14 +18,11 @@ process(Statement):- bye(Statement), write('Bye!').
 
 % When?
 process(Statement):- member('when', Statement), look_for_event(Statement, Events), 
-	member(E, Events), say(E), listen.
-
-%If you say thanks, say youre welcome 
-process(Statement):- thanks(Statement), write('You are welcome!'), listen.
+	member(_, Events), say(Events), listen.
 
 %Where? questions
 process(Statement):- member('where', Statement), look_for_event(Statement, Events),
-	member(E, Events), say(E), listen.
+	member(_, Events), say(Events), listen.
 
 %What? questions (what is happening in the theatre at 3?)
 process(Statement):- member('what', Statement),
@@ -32,13 +30,18 @@ process(Statement):- member('what', Statement),
 	member(E, Times), member(E, Locs),
 	say(E), listen.
 
+%If you say thanks, say youre welcome 
+process(Statement):- thanks(Statement), write('You are welcome!'), listen.
 
 % Catch all.  What is said if none of the previous rules fire.
 process(_):- write('im not sure what to do with that.  can you try again?'), listen.
 	
 % Say a statement giving information about the given event.
+say([]):- !.
+say([Event|RestEvents]):- say(Event), nl, say(RestEvents).
 say(event(Thing, Place, Time)):-	write('The '), write(Thing), 
 	write(' is in the '), write(Place), write(' at '), write(Time), write('.').
+
 
 hello_words(['hello', 'hi', 'howdy', 'hey', 'hola']).
 bye_words(['bye', 'goodbye']).
