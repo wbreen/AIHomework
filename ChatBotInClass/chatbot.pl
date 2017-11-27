@@ -27,9 +27,12 @@ process(Statement):- member('where', Statement), look_for_event(Statement, Event
 	member(E, Events), say(E), listen.
 
 %What? questions (what is happening in the theatre at 3?)
-process(Statement):- member('what', Statement), look_for_loc(Statement, Statement, Events), 
-	member(E, Events), say(E), listen.
-	
+process(Statement):- member('what', Statement),
+	look_for_time(Statement, Times), look_for_loc(Statement, Locs),
+	member(E, Times), member(E, Locs),
+	say(E), listen.
+
+
 % Catch all.  What is said if none of the previous rules fire.
 process(_):- write('im not sure what to do with that.  can you try again?'), listen.
 	
@@ -59,11 +62,30 @@ look_for_event([Word| Rest], Events):- title_key(Word, Title),
 look_for_event([_|Rest], Event):- look_for_event(Rest, Event).
 
 %This doesnt work, need to actually write out the database and rework this
-look_for_loc([],[],[]):- !.
-look_for_loc([Word|Rest],[Time|Rest2], Events):- event(Title ,Word, Time), 
-	look_for_loc(Rest, Rest2, OtherEvents),
-	Events = [event(Title, Word, Time)|OtherEvents].
-look_for_loc([_|Rest],[_|Rest2], Event):- look_for_loc(Rest,Rest2,Event).
+%This is what I am working on to make "what" questions work
+%What is happening at the theatre at 1? 
+
+% Generate list of all events whose location is in the statement
+look_for_loc([],[]):- !.
+look_for_loc([Place| Rest], Locations):- loc_full_key(Place, FullP),
+	loc_key(FullP, Event),
+	event(Event, FullP, Hour),
+	look_for_loc(Rest, OtherEvents),
+	Locations = [event(Event, FullP, Hour) | OtherEvents].
+
+look_for_loc([_|Rest], Locations):- look_for_loc(Rest, Locations).
+
+% generate a list of all events whose time is in the statement
+look_for_time([],[]):- !.
+look_for_time([Hour| Rest], Events):- time_key(Hour, Thing),
+	event(Thing, Place, Hour),
+	look_for_time(Rest, OtherEvents),
+	Events = [event(Thing, Place, Hour) | OtherEvents].
+look_for_time([_|Rest], Events):- look_for_time(Rest, Events).
+
+
+
+
 
 %Database of Events.  They are listed as: event title, place, time.
 event('orientation', 'theater', 1).
@@ -97,9 +119,66 @@ title_key('play', 'play').
 title_key('reading', 'reading time'). 
 
 
+%Location from shortened to full
+loc_full_key('theater','theater').
+loc_full_key('planetarium','planetarium').
+loc_full_key('lobby','lobby').
+loc_full_key('gift','gift shop').
+loc_full_key('book','book nook').
+
+
 %will need this to make the "what?" work, so you can lookup the event (still needs to be finished)
-event_key('theater', 1, 'orientation').
-event_key('theater', 2, 'movie').
-event_key('theater', 4, 'magic show').
-event_key('planetarium',1,'star show').
+% Locations associated with events
+loc_key('theater', 'orientation').
+loc_key('theater', 'movie').
+loc_key('theater', 'magic show').
+loc_key('planetarium', 'star show').
+loc_key('planetarium', 'laser show').
+loc_key('lobby', 'color demonstration').
+loc_key('lobby', 'physics talk').
+loc_key('lobby', 'flag raising').
+loc_key('gift shop', 'sale').
+loc_key('gift shop', 'giveaway').
+loc_key('book nook', 'story time').
+loc_key('book nook', 'play').
+loc_key('book nook', 'reading time').
+
+
+%Times associated with events
+time_key(1, 'orientation').
+time_key(1, 'laser show').
+time_key(1, 'physics talk').
+time_key(1, 'reading time').
+time_key(2, 'movie').
+time_key(3, 'star show').
+time_key(3, 'flag raising').
+time_key(4, 'magic show').
+time_key(11, 'color demonstration').
+time_key(11, 'story time').
+time_key(12, 'giveaway').
+time_key(12, 'play').
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
