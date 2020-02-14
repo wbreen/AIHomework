@@ -25,8 +25,6 @@ swap(0,9).
 swap(9,0).
 
 
-
-
 % Each of these represents the available moves when each is the empty square
 % Sometimes, one swap is represented as another, and if one swap between squares has already been represented, I just skip it
 %Move where X1 is the empty square
